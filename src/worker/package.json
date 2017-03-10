@@ -1,0 +1,14 @@
+{
+  "name": "git2s3-worker",
+  "version": "0.0.1",
+  "description": "",
+  "main": "git2s3-worker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anton Osmond <antonosmond@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.80.0"
+  }
+}
