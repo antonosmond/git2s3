@@ -1,5 +1,6 @@
 'use strict';
 
+const crypto = require('crypto');
 const AWS = require('aws-sdk');
 
 AWS.config.apiVersions = {
@@ -33,6 +34,12 @@ function validateSignature(event) {
       return resolve(JSON.parse(data.Payload));
     });
   });
+}
+
+function generateMessageDeduplicationID(content) {
+  const hash = crypto.createHash('sha256');
+  hash.update(JSON.stringify(content));
+  return hash.digest('hex');
 }
 
 function sendMessages(body) {
@@ -69,6 +76,7 @@ function sendMessages(body) {
         MessageBody: `Request to upload '${asset.name}' to S3 from '${release}'`,
         MessageGroupId: 'git2s3'
       };
+      params.MessageDeduplicationId = generateMessageDeduplicationID(params);
       sqs.sendMessage(params, err => {
         if (err) return reject(err);
         return resolve();
